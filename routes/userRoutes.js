@@ -7,6 +7,7 @@ const {
   renderResetPasswordForm,
   handleResetPassword,
 } = require('../controllers/userController');
+const { protect, admin, pharmacist, lambdaUser } = require('../middleware/authMiddleware');
 const router = express.Router();
 
 /**
@@ -171,5 +172,18 @@ router.get('/resetpassword/:token', renderResetPasswordForm);
  *         description: Invalid or expired token
  */
 router.post('/resetpassword/:token', handleResetPassword);
+
+// Protected routes
+router.get('/admin', protect, admin, (req, res) => {
+  res.send('Welcome, admin!');
+});
+
+router.get('/pharmacist', protect, pharmacist, (req, res) => {
+  res.send('Welcome, pharmacist!');
+});
+
+router.get('/lambda', protect, lambdaUser, (req, res) => {
+  res.send('Welcome, lambda user!');
+});
 
 module.exports = router;

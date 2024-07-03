@@ -34,4 +34,22 @@ const admin = (req, res, next) => {
   }
 };
 
-module.exports = { protect, admin };
+const pharmacist = (req, res, next) => {
+  if (req.user && req.user.role === 'pharmacist') {
+    return next();
+  } else {
+    res.status(401).json({ message: 'Not authorized as a pharmacist' });
+    return;
+  }
+};
+
+const lambdaUser = (req, res, next) => {
+  if (req.user && req.user.role === 'lambda') {
+    return next();
+  } else {
+    res.status(401).json({ message: 'Not authorized as a lambda user' });
+    return;
+  }
+};
+
+module.exports = { protect, admin, pharmacist, lambdaUser };

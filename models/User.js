@@ -11,13 +11,13 @@ const userSchema = new mongoose.Schema({
   city: { type: String },
   country: { type: String },
   password: { type: String, required: true },
-  role: { type: String, enum: ['admin', 'vendor', 'pharmacy'], default: 'pharmacy' },
+  role: { type: String, enum: ['admin', 'lambda', 'pharmacy'], default: 'pharmacy' },
   isVerified: { type: Boolean, default: false },
   verificationToken: { type: String },
   resetPasswordToken: { type: String },
   resetPasswordExpire: { type: Date },
   stripeCustomerId: { type: String },
-  paymentMethods: { type: [String], default: [] }, // Added this line
+  paymentMethods: { type: [String], default: [] },
 });
 
 userSchema.pre('save', async function (next) {
