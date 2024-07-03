@@ -7,6 +7,7 @@ const {
   deleteProduct,
 } = require('../controllers/productController');
 const upload = require('../middleware/uploadMiddleware'); // Import multer upload middleware
+const { protect } = require('../middleware/authMiddleware');
 const router = express.Router();
 
 /**
@@ -26,7 +27,9 @@ const router = express.Router();
  *                 type: string
  *               description:
  *                 type: string
- *               price:
+ *               lambdaUserPrice:
+ *                 type: number
+ *               pharmacistPrice:
  *                 type: number
  *               size:
  *                 type: string
@@ -35,6 +38,8 @@ const router = express.Router();
  *               qty:
  *                 type: number
  *                 default: 0
+ *               categoryId:
+ *                 type: string
  *               images:
  *                 type: array
  *                 items:
@@ -46,7 +51,7 @@ const router = express.Router();
  *       400:
  *         description: Bad request
  */
-router.post('/', upload, createProduct); // Use upload middleware
+router.post('/', upload, protect, createProduct); // Use upload middleware
 
 /**
  * @swagger
@@ -58,7 +63,7 @@ router.post('/', upload, createProduct); // Use upload middleware
  *       200:
  *         description: List of all products
  */
-router.get('/', getProducts);
+router.get('/', protect, getProducts);
 
 /**
  * @swagger
@@ -79,7 +84,7 @@ router.get('/', getProducts);
  *       404:
  *         description: Product not found
  */
-router.get('/:id', getProductById);
+router.get('/:id', protect, getProductById);
 
 /**
  * @swagger
@@ -105,7 +110,9 @@ router.get('/:id', getProductById);
  *                 type: string
  *               description:
  *                 type: string
- *               price:
+ *               lambdaUserPrice:
+ *                 type: number
+ *               pharmacistPrice:
  *                 type: number
  *               size:
  *                 type: string
@@ -113,6 +120,8 @@ router.get('/:id', getProductById);
  *                 type: string
  *               qty:
  *                 type: number
+ *               categoryId:
+ *                 type: string
  *               images:
  *                 type: array
  *                 items:
@@ -126,7 +135,7 @@ router.get('/:id', getProductById);
  *       400:
  *         description: Bad request
  */
-router.put('/:id', upload, updateProduct); // Use upload middleware
+router.put('/:id', upload, protect, updateProduct); // Use upload middleware
 
 /**
  * @swagger
@@ -147,6 +156,6 @@ router.put('/:id', upload, updateProduct); // Use upload middleware
  *       404:
  *         description: Product not found
  */
-router.delete('/:id', deleteProduct);
+router.delete('/:id', protect, deleteProduct);
 
 module.exports = router;

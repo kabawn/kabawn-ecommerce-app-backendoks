@@ -10,6 +10,7 @@ const orderRoutes = require('./routes/orderRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const paymentMethodRoutes = require('./routes/paymentMethodRoutes');
 const addressRoutes = require('./routes/addressRoutes');
+const categoryRoutes = require('./routes/categoryRoutes'); // Import category routes
 const setupSwagger = require('./swagger/swagger');
 const { protect } = require('./middleware/authMiddleware');
 
@@ -35,6 +36,7 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/payment-methods', paymentMethodRoutes);
 app.use('/api/addresses', protect, addressRoutes);
+app.use('/api/categories', categoryRoutes); // Add category routes
 
 // Setup Swagger
 setupSwagger(app);

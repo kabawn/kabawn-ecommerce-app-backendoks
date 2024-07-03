@@ -15,7 +15,11 @@ const productSchema = mongoose.Schema(
         type: String,
       },
     ],
-    price: {
+    lambdaUserPrice: {
+      type: Number,
+      required: true,
+    },
+    pharmacistPrice: {
       type: Number,
       required: true,
     },
@@ -30,6 +34,11 @@ const productSchema = mongoose.Schema(
       type: Number,
       required: true,
       default: 0,
+    },
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Category',
+      required: true,
     },
   },
   {

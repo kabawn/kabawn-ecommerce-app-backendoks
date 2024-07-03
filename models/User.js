@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
   city: { type: String },
   country: { type: String },
   password: { type: String, required: true },
-  role: { type: String, enum: ['admin', 'lambda', 'pharmacy'], default: 'pharmacy' },
+  role: { type: String, enum: ['admin', 'lambda', 'pharmacist'], default: 'pharmacist' },
   isVerified: { type: Boolean, default: false },
   verificationToken: { type: String },
   resetPasswordToken: { type: String },
