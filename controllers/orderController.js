@@ -1,5 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const Order = require('../models/Order');
+const Stock = require('../models/Stock'); // Import the Stock model
+const Product = require('../models/Product'); // Import the Product model
 
 // @desc    Create new order
 // @route   POST /api/orders
@@ -32,6 +34,29 @@ const addOrderItems = asyncHandler(async (req, res) => {
     });
 
     const createdOrder = await order.save();
+
+    // Update stock if the user is a pharmacist
+    if (req.user.role === 'pharmacist') {
+      let stock = await Stock.findOne({ pharmacist: req.user._id });
+
+      if (!stock) {
+        stock = new Stock({ pharmacist: req.user._id, items: [] });
+      }
+
+      for (const item of orderItems) {
+        const product = await Product.findById(item.product);
+        if (product) {
+          const stockItemIndex = stock.items.findIndex(stockItem => stockItem.product.toString() === item.product.toString());
+          if (stockItemIndex > -1) {
+            stock.items[stockItemIndex].quantity += item.qty;
+          } else {
+            stock.items.push({ product: item.product, quantity: item.qty });
+          }
+        }
+      }
+
+      await stock.save();
+    }
 
     res.status(201).json(createdOrder);
   }

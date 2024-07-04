@@ -10,9 +10,12 @@ const orderRoutes = require('./routes/orderRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const paymentMethodRoutes = require('./routes/paymentMethodRoutes');
 const addressRoutes = require('./routes/addressRoutes');
-const categoryRoutes = require('./routes/categoryRoutes'); // Import category routes
+const categoryRoutes = require('./routes/categoryRoutes'); 
+const stockRoutes = require('./routes/stockRoutes'); // Import stock routes
+const cartRoutes = require('./routes/cartRoutes'); 
+
 const setupSwagger = require('./swagger/swagger');
-const { protect } = require('./middleware/authMiddleware');
+const { protect, pharmacist } = require('./middleware/authMiddleware');
 
 // Load environment variables
 dotenv.config();
@@ -37,6 +40,8 @@ app.use('/api/payments', paymentRoutes);
 app.use('/api/payment-methods', paymentMethodRoutes);
 app.use('/api/addresses', protect, addressRoutes);
 app.use('/api/categories', categoryRoutes); // Add category routes
+app.use('/api/cart', protect, cartRoutes); // Add cart routes
+app.use('/api/stock', protect, pharmacist, stockRoutes); // Add stock routes
 
 // Setup Swagger
 setupSwagger(app);
